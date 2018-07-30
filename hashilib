@@ -1,0 +1,29 @@
+import hashlib
+db = {
+    'bob':'1235',
+    'sally':'1235',
+    'brown':'bb123dd'
+}
+
+def get_md5(*args):
+    n = ''
+    for i in args:
+        n += i
+    sha1 = hashlib.sha1()
+    sha1.update(n.encode('utf-8'))
+    return sha1.hexdigest()
+
+def register(username, password):
+    return get_md5(password ,username,'the Salt')
+
+def login(username, password):
+    for key in db:
+        if username == key:
+            if register(username, password) == get_md5(db[key], key, 'the Salt'):
+                return 'login success'
+            else:
+                return 'wrong password'
+    return 'wrong username'
+
+print(login('sly', '5'))
+# register('bob', '1235')
